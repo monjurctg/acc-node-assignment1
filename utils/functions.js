@@ -1,9 +1,13 @@
 const fs = require("fs");
-
+var path = require("path");
+let file = "./data/data.json";
+let file2 = path.normalize(file);
 class Database {
   // get all data from json data
+
   async getUsers() {
-    const data = await fs.promises.readFile("./data/data.json", "utf-8");
+    console.log(file2, "file2");
+    const data = await fs.promises.readFile(file2, "utf-8");
     if (data.length) {
       return JSON.parse(data);
     } else {
@@ -20,7 +24,7 @@ class Database {
       userData.push(objecData);
       const newData = JSON.stringify(userData);
       data = await fs.promises
-        .writeFile("./data/data.json", newData, "utf-8")
+        .writeFile(file2, newData, "utf-8")
         .then(() => {
           return { status: 200, message: "add success" };
         })
