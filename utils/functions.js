@@ -1,13 +1,13 @@
 const fs = require("fs");
 var path = require("path");
 let file = "./data/data.json";
-let file2 = path.normalize(file);
+let file2 = path.dirname(file);
 class Database {
   // get all data from json data
 
   async getUsers() {
-    console.log(file2, "file2");
-    const data = await fs.promises.readFile(file2, "utf-8");
+    console.log(`${file2}/data.json`, "file2");
+    const data = await fs.promises.readFile(`${file2}/data.json`, "utf-8");
     if (data.length) {
       return JSON.parse(data);
     } else {
