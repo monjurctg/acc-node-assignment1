@@ -2,12 +2,15 @@ const fs = require("fs");
 var path = require("path");
 let file = "./data/data.json";
 let file2 = path.dirname(file);
+const process = require("process");
 class Database {
   // get all data from json data
 
   async getUsers() {
-    console.log(`${file2}/data.json`, "file2");
-    const data = await fs.promises.readFile(`${file2}/data.json`, "utf-8");
+    const data = await fs.promises.readFile(
+      `${process.cwd() + "/data"}/data.json`,
+      "utf-8"
+    );
     if (data.length) {
       return JSON.parse(data);
     } else {
@@ -24,7 +27,7 @@ class Database {
       userData.push(objecData);
       const newData = JSON.stringify(userData);
       data = await fs.promises
-        .writeFile(`${file2}/data.json`, newData, "utf-8")
+        .writeFile(`${process.cwd() + "/data"}/data.json`, newData, "utf-8")
         .then(() => {
           return { status: 200, message: "add success" };
         })
