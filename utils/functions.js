@@ -24,7 +24,7 @@ class Database {
       userData.push(objecData);
       const newData = JSON.stringify(userData);
       data = await fs.promises
-        .writeFile(file2, newData, "utf-8")
+        .writeFile(`${file2}/data.json`, newData, "utf-8")
         .then(() => {
           return { status: 200, message: "add success" };
         })
