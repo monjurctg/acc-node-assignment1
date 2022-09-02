@@ -33,7 +33,7 @@ class Database {
         })
         .catch((err) => {
           console.log(err);
-          return { status: 500, message: "not save" };
+          res.send(err);
         });
     }
     return data;
