@@ -67,6 +67,10 @@ userFuntion.updateUser = async (req, res) => {
   };
 
   const data = await db.updateOne(id, [newUser]);
+  console.log(data);
+  if (data.status == 200) {
+    res.send({ success: true, message: "update successfully" });
+  }
 };
 userFuntion.updateManyUser = async (req, res) => {
   /**

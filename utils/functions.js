@@ -79,13 +79,24 @@ class Database {
     }
   }
   async updateOne(id, body) {
+    console.log(body, "kdjfkdj");
     const allUser = await this.getUsers();
     const update = allUser.map((user) => {
       if (user.Id == id) {
-        console.log(user);
+        console.log(user.name, body[0].name);
+        user.Id = id;
+        user.name = body[0].name ?? user.name;
+        user.gender = body[0].gender ?? user.gender;
+
+        user.contact = body[0].contact ?? user.contact;
+
+        user.photoUrl = body[0].photoUrl ?? user.photoUrl;
       }
+      return user;
       // console.log(findUser);
     });
+    const result = await this.setUser(update, "array");
+    return result;
   }
   async updateMany(seletctdUsers) {
     const allUser = await this.getUsers();
