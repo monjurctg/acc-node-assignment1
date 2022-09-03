@@ -2,8 +2,11 @@ const db = require("../utils/functions");
 const crypto = require("crypto");
 const userFuntion = {};
 userFuntion.getAllUser = async (req, res) => {
-  console.log("object");
-  const users = await db.getUsers(); //get user take a filepath
+  let users = await db.getUsers();
+  const { limit } = req.query;
+  if (limit) {
+    users = await db.limitUser(limit);
+  }
   if (users) {
     res.json({ users });
   }
@@ -11,12 +14,15 @@ userFuntion.getAllUser = async (req, res) => {
 
 // random user
 userFuntion.randomUser = async (req, res) => {
-  const { limit } = req.query;
-  console.log(limit);
-  const users = await db.getUsers();
+  // const users = await db.getUsers();
   //   console.log(users);
-  const randomno = users[Math.floor(Math.random() * users.length)];
-
+  const randomno = await db.random();
+  res.json({ user: randomno });
+};
+userFuntion.deleteUser = async (req, res) => {
+  // const users = await db.getUsers();
+  //   console.log(users);
+  const randomno = await db.deleteUser();
   res.json({ user: randomno });
 };
 

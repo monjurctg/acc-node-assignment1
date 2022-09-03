@@ -17,14 +17,26 @@ class Database {
       return "not found";
     }
   }
+
+  async random() {
+    let userData = await this.getUsers();
+    const randomUser = userData[Math.floor(Math.random() * userData.length)];
+
+    return randomUser;
+  }
   //   set a data in json
-  async setUser(objecData) {
+  async setUser(saveData, method) {
     //   console.log(getUsers());
     let data;
     let userData = await this.getUsers();
+    if (method == "delete") {
+      userData = await saveData;
+    } else if (method == "save") {
+      userData.push(objecData);
+    }
+    console.log(userData);
 
     if (userData) {
-      userData.push(objecData);
       const newData = JSON.stringify(userData);
       data = await fs.promises
         .writeFile(`${process.cwd() + "/data"}/data.json`, newData, "utf-8")
@@ -38,8 +50,45 @@ class Database {
     }
     return data;
   }
-  async limit(limit) {
-    let userData = await this.setUser();
+  async limitUser(limit) {
+    console.log(limit);
+    let userData = await this.getUsers();
+    let limitUser = [];
+    let length;
+    if (userData.length < 0) {
+      length = userData.length;
+    } else {
+      length = limit;
+    }
+    for (let i = 0; i < limit; i++) {
+      const randomUser = await this.random();
+
+      limitUser.push(randomUser);
+    }
+
+    return limitUser;
+  }
+  async deleteUser() {
+    const deleteUser = await this.random();
+    const allUser = await this.getUsers();
+
+    let resData = allUser.filter((user) => user.Id != deleteUser.Id);
+
+    if (resData.length > 0) {
+      console.log("delet");
+      await this.setUser(resData, "delete");
+    }
+  }
+  async updateOne() {}
+  async updateMany(seletctdUsers) {
+    const allUser = await this.getUsers();
+    let upadateUsers = allUser.map((user) => {
+      var found = seletctdUsers.find((s) => s.Id === user.Id);
+      if (found) {
+        user = Object.assign(user, found);
+      }
+      return user;
+    });
   }
 }
 let db = new Database();
