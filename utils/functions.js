@@ -1,6 +1,6 @@
 const fs = require("fs");
 var path = require("path");
-let file = "./data/data.json";
+let file = "../data/data.json";
 let file2 = path.dirname(file);
 const process = require("process");
 class Database {
@@ -29,12 +29,12 @@ class Database {
     //   console.log(getUsers());
     let data;
     let userData = await this.getUsers();
-    if (method == "delete") {
+    if (method == "array") {
       userData = await saveData;
     } else if (method == "save") {
-      userData.push(objecData);
+      userData.push(saveData);
     }
-    console.log(userData);
+    // console.log(userData);
 
     if (userData) {
       const newData = JSON.stringify(userData);
@@ -68,18 +68,25 @@ class Database {
 
     return limitUser;
   }
-  async deleteUser() {
-    const deleteUser = await this.random();
+  async deleteUser(id) {
     const allUser = await this.getUsers();
 
-    let resData = allUser.filter((user) => user.Id != deleteUser.Id);
+    let resData = allUser.filter((user) => user.Id != id);
 
     if (resData.length > 0) {
       console.log("delet");
-      await this.setUser(resData, "delete");
+      await this.setUser(resData, "array");
     }
   }
-  async updateOne() {}
+  async updateOne(id, body) {
+    const allUser = await this.getUsers();
+    const update = allUser.map((user) => {
+      if (user.Id == id) {
+        console.log(user);
+      }
+      // console.log(findUser);
+    });
+  }
   async updateMany(seletctdUsers) {
     const allUser = await this.getUsers();
     let upadateUsers = allUser.map((user) => {
@@ -89,6 +96,8 @@ class Database {
       }
       return user;
     });
+    const result = await this.setUser(allUser, "array");
+    return result;
   }
 }
 let db = new Database();

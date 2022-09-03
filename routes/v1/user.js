@@ -10,6 +10,9 @@ router.get("/all", userFuntion.getAllUser);
 
 router.get("/random", userFuntion.randomUser);
 router.post("/save", fieldValidation, userFuntion.saveUser);
-router.delete("/delete", userFuntion.deleteUser);
+router.delete("/delete/:id", userFuntion.deleteUser);
+router.patch("/update/:id", userFuntion.updateUser);
+
+router.patch("/bulk-update", userFuntion.updateManyUser);
 
 module.exports = router;
