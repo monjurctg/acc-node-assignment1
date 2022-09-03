@@ -5,14 +5,10 @@ let file = "../data/data.json";
 // const process = require("process");
 class Database {
   // get all data from json data
-
+  users = fs.readFileSync(`${__dirname}/../data/data.json`);
   async getUsers() {
-    const data = await fs.promises.readFile(
-      `${__dirname}/../data/data.json`,
-      "utf-8"
-    );
-    if (data.length) {
-      return JSON.parse(data);
+    if (this.users.length > 0) {
+      return JSON.parse(this.users);
     } else {
       return "not found";
     }
@@ -39,7 +35,7 @@ class Database {
     if (userData) {
       const newData = JSON.stringify(userData);
       data = await fs.promises
-        .writeFile(`${__dirname}/../data/data.json`, newData, "utf-8")
+        .writeFile(`${__dirname}/../data/data.json`, newData)
         .then(() => {
           return { status: 200, message: "add success" };
         })
